@@ -1,39 +1,19 @@
-const fileInput = document.getElementById("fileInput");
-const fileNameText = document.getElementById("fileName");
-
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length > 0) {
-    fileNameText.textContent = fileInput.files[0].name;
-  } else {
-    fileNameText.textContent = "No file chosen";
-  }
-});
-
 async function uploadFile() {
-  const file = fileInput.files[0];
+  const fileInput = document.getElementById("fileInput");
 
-  if (!file) {
-    alert("Please select a file first");
+  if (!fileInput.files.length) {
+    alert("Please select a file");
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = async () => {
-    const base64Data = reader.result.split(",")[1];
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
 
-    const response = await fetch("https://smart-doc-function.azurewebsites.net", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ file: base64Data })
-    });
+  const response = await fetch("https://smart-doc-function.azurewebsites.net/api/uploadDocument", {
+    method: "POST",
+    body: formData
+  });
 
-    const result = await response.text();
-    alert(result);
-  };
-
-  reader.readAsDataURL(file);
+  const result = await response.text();
+  alert(result);
 }
-
-
