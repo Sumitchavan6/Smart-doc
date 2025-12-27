@@ -21,7 +21,7 @@ async function uploadFile() {
   reader.onload = async () => {
     const base64Data = reader.result.split(",")[1];
 
-    const response = await fetch("https://.azurewebsites.net/api/uploadDocument", {
+    const response = await fetch("https://smart-doc-function.azurewebsites.net/api/uploadDocument", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -35,3 +35,4 @@ async function uploadFile() {
 
   reader.readAsDataURL(file);
 }
+
